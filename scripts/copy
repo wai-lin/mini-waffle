@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+import fs from "node:fs"
+
+const argv = process.argv.slice(2)
+
+try {
+    const src = argv.at(0)
+    const dest = argv.at(1)
+    console.log(`Copying ${src} to ${dest}...`)
+    fs.copyFileSync(src, dest)
+    console.log("Copy complete!")
+} catch (e) {
+    console.log("An error occurred while copying the file.")
+    console.log(e)
+}

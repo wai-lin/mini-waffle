@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json.schemastore.org/package",
+	"name": "@mini-waffle/sdk-config",
+	"version": "0.0.0",
+	"description": "BetterAuth SDK configuration",
+	"main": "index.esm.js",
+	"types": "index.d.ts",
+	"peerDependencies": {
+		"better-auth": "^1.1.19"
+	}
+}

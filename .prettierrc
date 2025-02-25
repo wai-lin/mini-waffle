@@ -1,0 +1,12 @@
+{
+    "arrowParens": "always",
+    "semi": false,
+    "trailingComma": "all",
+    "quoteProps": "consistent",
+    "singleQuote": false,
+    "useTabs": true,
+    "plugins": [
+        "prettier-plugin-organize-imports",
+        "prettier-plugin-tailwindcss"
+    ]
+}

@@ -3,7 +3,7 @@
     "semi": false,
     "trailingComma": "all",
     "quoteProps": "consistent",
-    "singleQuote": false,
+    "singleQuote": true,
     "useTabs": true,
     "plugins": [
         "prettier-plugin-organize-imports",

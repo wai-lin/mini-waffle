@@ -1,7 +1,14 @@
-import { bigint, boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+	bigint,
+	boolean,
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+} from 'drizzle-orm/pg-core'
 
 const commonFields = {
-	id: text('id').primaryKey(),
+	id: uuid('id').primaryKey().defaultRandom(),
 	createdAt: timestamp('createdAt').notNull().defaultNow(),
 	updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 }
@@ -20,7 +27,7 @@ export const user = pgTable('user', {
 
 export const session = pgTable('session', {
 	...commonFields,
-	userId: text('userId')
+	userId: uuid('userId')
 		.notNull()
 		.references(() => user.id),
 	token: text('token').notNull(),
@@ -28,11 +35,12 @@ export const session = pgTable('session', {
 	ipAddress: text('ipAddress'),
 	userAgent: text('userAgent'),
 	impersonatedBy: text('impersonatedBy'),
+	activeOrganizationId: text('activeOrganizationId'),
 })
 
 export const account = pgTable('account', {
 	...commonFields,
-	userId: text('userId')
+	userId: uuid('userId')
 		.notNull()
 		.references(() => user.id),
 	accountId: text('accountId').notNull(),
@@ -51,4 +59,43 @@ export const verification = pgTable('verification', {
 	identifier: text('identifier').notNull(),
 	value: text('value').notNull(),
 	expiresAt: timestamp('expiresAt').notNull(),
+})
+
+export const organization = pgTable('organization', {
+	...commonFields,
+	name: text('name').notNull(),
+	slug: text('slug').notNull(),
+	logo: text('logo'),
+	metadata: text('metadata'),
+})
+
+export const member = pgTable('member', {
+	...commonFields,
+	userId: uuid('userId')
+		.notNull()
+		.references(() => user.id),
+	organizationId: uuid('organizationId')
+		.notNull()
+		.references(() => organization.id),
+	role: text('role'),
+})
+
+export const invitation = pgTable('invitation', {
+	...commonFields,
+	organizationId: uuid('organizationId')
+		.notNull()
+		.references(() => organization.id),
+	inviterId: uuid('inviterId')
+		.notNull()
+		.references(() => user.id),
+	email: text('email').notNull(),
+	role: text('role').notNull(),
+	status: text('status').notNull(),
+	expiresAt: timestamp('expiresAt').notNull(),
+})
+
+export const jwks = pgTable('jwks', {
+	...commonFields,
+	publicKey: text('publicKey').notNull(),
+	privateKey: text('privateKey').notNull(),
 })

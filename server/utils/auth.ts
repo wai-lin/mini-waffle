@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin } from 'better-auth/plugins'
+import { admin, jwt } from 'better-auth/plugins'
 
 // NOTE: absolute import path is necessary here
 // since this is also used in sdk package generation
@@ -16,11 +16,21 @@ export const auth = betterAuth({
 		schema,
 		provider: 'pg',
 	}),
+	advanced: {
+		generateId: false,
+	},
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,
 	},
-	plugins: [admin()],
+	plugins: [
+		admin(),
+		jwt({
+			jwks: {
+				keyPairConfig: { alg: 'ES512' },
+			},
+		}),
+	],
 	onAPIError: {
 		onError(err) {
 			console.log('BetterAuth Error : ', err)

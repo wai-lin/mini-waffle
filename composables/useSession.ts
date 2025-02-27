@@ -1,3 +1,3 @@
-import { authClient } from "~/shared/utils/auth-client"
+import { authClient } from '~/utils/auth-client'
 
 export const useSession = authClient.useSession

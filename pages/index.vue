@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { data: alreadyHasAdmin } = await useFetch('/api/users/check-admins')
+</script>
 
 <template>
 	<section class="grid h-screen w-screen place-items-center">
@@ -7,7 +9,7 @@
 				<h3 class="text-xl font-bold">Sign In</h3>
 			</template>
 
-			<SignIn />
+			<AuthSignIn />
 		</UCard>
 	</section>
 </template>

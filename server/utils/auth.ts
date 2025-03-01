@@ -16,12 +16,20 @@ export const auth = betterAuth({
 		schema,
 		provider: 'pg',
 	}),
+	// TODO: setup Redis here. secondaryStorage: {},
 	advanced: {
 		generateId: false,
 	},
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,
+		autoSignIn: false,
+		// TODO: implement with bcrypt here. password: {
+		// 	hash(password) {
+		// 	},
+		// 	verify(data) {
+		// 	},
+		// }
 	},
 	plugins: [
 		admin(),

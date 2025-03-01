@@ -15,11 +15,11 @@ const formState = reactive<Schema>({
 	password: '',
 })
 
+const formErrMsg = ref('')
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-	console.log(event.data)
 	const result = await authClient.signIn.email(event.data)
-	if (result.error)
-		result.error.message
+	if (result.error) formErrMsg.value = result.error.message ?? ''
 }
 </script>
 
@@ -30,6 +30,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 		@submit="onSubmit"
 		class="space-y-4"
 	>
+		<UAlert
+			v-if="formErrMsg.length > 0"
+			color="red"
+			variant="subtle"
+			title="Error!"
+			:description="formErrMsg"
+		/>
+
 		<UFormGroup label="Email">
 			<UInput
 				v-model="formState.email"

@@ -16,4 +16,17 @@ export default defineNuxtConfig({
 			link: [{ rel: 'icon', href: 'waffle.png' }],
 		},
 	},
+	routeRules: {
+		'/api/**': {
+			/**
+			 * This enables CORS for all `/api/*` routes.
+			 * Customize the `Access-Control-Allow-Origin` for production mode.
+			 */
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+				'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+			},
+		},
+	},
 })

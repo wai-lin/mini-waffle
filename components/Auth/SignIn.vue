@@ -20,6 +20,7 @@ const formErrMsg = ref('')
 async function onSubmit(event: FormSubmitEvent<Schema>) {
 	const result = await authClient.signIn.email(event.data)
 	if (result.error) formErrMsg.value = result.error.message ?? ''
+	if (result.data?.token) navigateTo('/dashboard')
 }
 </script>
 

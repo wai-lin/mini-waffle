@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, jwt } from 'better-auth/plugins'
+import { admin, jwt, openAPI } from 'better-auth/plugins'
 
 // NOTE: absolute import path is necessary here
 // since this is also used in sdk package generation
@@ -32,6 +32,7 @@ export const auth = betterAuth({
 		// }
 	},
 	plugins: [
+		openAPI(),
 		admin(),
 		jwt({
 			jwks: {

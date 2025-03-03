@@ -3,21 +3,34 @@ import 'dotenv/config'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, jwt, openAPI } from 'better-auth/plugins'
-import { createClient } from 'redis'
 
 // NOTE: absolute import path is necessary here
 // since this is also used in sdk package generation
 // IMPORTANT: do not change this to relative import path
 import { db } from '../../db/client'
 import * as schema from '../../db/schema'
+import { authConfig } from './config'
+import { passwordUtils } from './hashing'
+import { getRedisClient } from './redis'
+
+export type Auth = Awaited<ReturnType<typeof createAuthInstance>>
+let authInstance: Auth | null = null
 
 export async function createBetterAuth() {
-	const redis = createClient()
-	await redis.connect()
+	if (authInstance) {
+		return authInstance
+	}
 
-	const auth = betterAuth({
+	authInstance = await createAuthInstance()
+	return authInstance
+}
+
+async function createAuthInstance() {
+	const redis = await getRedisClient()
+
+	return await betterAuth({
 		// TODO: move TrustedOrigins to database configuration
-		trustedOrigins: (process.env.TRUSTED_ORIGINS ?? '').split(','),
+		trustedOrigins: authConfig.trustedOrigins,
 		database: drizzleAdapter(db, {
 			schema,
 			provider: 'pg',
@@ -45,23 +58,15 @@ export async function createBetterAuth() {
 			enabled: true,
 			requireEmailVerification: false,
 			autoSignIn: false,
-			// TODO: implement with bcrypt here. password: {
-			// 	hash(password) {
-			// 	},
-			// 	verify(data) {
-			// 	},
-			// }
+			password: {
+				hash: passwordUtils.hash,
+				verify: passwordUtils.verify,
+			},
 		},
 		socialProviders: {
 			// TODO: move configurations to databse
-			google: {
-				clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-				clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-			},
-			microsoft: {
-				clientId: process.env.MICROSOFT_CLIENT_ID ?? '',
-				clientSecret: process.env.MICROSOFT_CLIENT_SECRET ?? '',
-			},
+			google: authConfig.google,
+			microsoft: authConfig.microsoft,
 		},
 		plugins: [
 			openAPI(),
@@ -79,6 +84,4 @@ export async function createBetterAuth() {
 			},
 		},
 	})
-
-	return auth
 }

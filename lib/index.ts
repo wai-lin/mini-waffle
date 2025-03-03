@@ -3,9 +3,7 @@ import {
 	customSessionClient,
 	inferAdditionalFields,
 } from 'better-auth/client/plugins'
-import { auth } from '../server/utils/auth'
-
-export type Auth = typeof auth
+import { type Auth } from '../server/utils/auth'
 
 export const options = {
 	plugins: [inferAdditionalFields<Auth>(), customSessionClient<Auth>()],

@@ -14,6 +14,7 @@ import { redis } from './redisClient'
 redis.connect()
 
 export const auth = betterAuth({
+	// TODO: move TrustedOrigins to database configuration
 	trustedOrigins: (process.env.TRUSTED_ORIGINS ?? '').split(','),
 	database: drizzleAdapter(db, {
 		schema,
@@ -49,6 +50,17 @@ export const auth = betterAuth({
 		// 	},
 		// }
 	},
+	socialProviders: {
+		// TODO: move configurations to databse
+		google: {
+			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+		},
+		microsoft: {
+			clientId: process.env.MICROSOFT_CLIENT_ID ?? '',
+			clientSecret: process.env.MICROSOFT_CLIENT_SECRET ?? '',
+		},
+	},
 	plugins: [
 		openAPI(),
 		admin(),
@@ -60,6 +72,7 @@ export const auth = betterAuth({
 	],
 	onAPIError: {
 		onError(err) {
+			// TODO: log error in somewhere persistent
 			console.log('BetterAuth Error : ', err)
 		},
 	},

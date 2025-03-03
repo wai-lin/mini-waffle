@@ -35,6 +35,9 @@ export const auth = betterAuth({
 	advanced: {
 		generateId: false,
 	},
+	rateLimit: {
+		storage: 'secondary-storage',
+	},
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,

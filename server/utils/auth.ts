@@ -9,6 +9,9 @@ import { admin, jwt, openAPI } from 'better-auth/plugins'
 // IMPORTANT: do not change this to relative import path
 import { db } from '../../db/client'
 import * as schema from '../../db/schema'
+import { redis } from './redisClient'
+
+redis.connect()
 
 export const auth = betterAuth({
 	trustedOrigins: (process.env.TRUSTED_ORIGINS ?? '').split(','),
@@ -16,7 +19,19 @@ export const auth = betterAuth({
 		schema,
 		provider: 'pg',
 	}),
-	// TODO: setup Redis here. secondaryStorage: {},
+	secondaryStorage: {
+		get: async (key) => {
+			const value = await redis.get(key)
+			return value ? JSON.stringify(value) : null
+		},
+		set: async (key, value, ttl) => {
+			if (ttl) await redis.set(key, value, { EX: ttl })
+			else await redis.set(key, value)
+		},
+		delete: async (key) => {
+			await redis.del(key)
+		},
+	},
 	advanced: {
 		generateId: false,
 	},

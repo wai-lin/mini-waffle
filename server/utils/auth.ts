@@ -7,9 +7,9 @@ import { admin, jwt, openAPI } from 'better-auth/plugins'
 // NOTE: absolute import path is necessary here
 // since this is also used in sdk package generation
 // IMPORTANT: do not change this to relative import path
-import { db } from '../../db/client'
 import * as schema from '../../db/schema'
 import { authConfig } from './config'
+import { db } from './db'
 import { passwordUtils } from './hashing'
 import { getRedisClient } from './redis'
 

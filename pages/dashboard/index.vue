@@ -1,3 +1,3 @@
 <template>
-	<h1>Welcome to Dashboard</h1>
+	<UsageClient class="pt-4" />
 </template>

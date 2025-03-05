@@ -10,7 +10,7 @@ import { admin, jwt, openAPI } from 'better-auth/plugins'
 import * as schema from '../../db/schema'
 import { authConfig } from './config'
 import { db } from './db'
-import { passwordUtils } from './hashing'
+import { passwordConfig } from './hashing'
 import { getRedisClient } from './redis'
 
 export type Auth = Awaited<ReturnType<typeof createAuthInstance>>
@@ -58,10 +58,7 @@ async function createAuthInstance() {
 			enabled: true,
 			requireEmailVerification: false,
 			autoSignIn: false,
-			password: {
-				hash: passwordUtils.hash,
-				verify: passwordUtils.verify,
-			},
+			password: passwordConfig,
 		},
 		socialProviders: {
 			// TODO: move configurations to databse

@@ -9,6 +9,7 @@
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
 		"db:generate": "drizzle-kit generate",
+		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
 		"bundle:sdk": "tsup",
@@ -16,7 +17,7 @@
 	},
 	"dependencies": {
 		"@nuxt/ui": "2.21.0",
-		"bcrypt": "^5.1.1",
+		"bcryptjs": "^3.0.2",
 		"better-auth": "^1.1.19",
 		"dotenv": "^16.4.7",
 		"drizzle-orm": "^0.39.3",
@@ -30,7 +31,6 @@
 	"devDependencies": {
 		"@nuxt/icon": "^1.10.3",
 		"@nuxtjs/tailwindcss": "6.13.1",
-		"@types/bcrypt": "^5.0.2",
 		"@types/node": "^22.13.5",
 		"@types/pg": "^8.11.11",
 		"drizzle-kit": "^0.30.4",

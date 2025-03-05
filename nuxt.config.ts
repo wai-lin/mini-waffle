@@ -13,7 +13,7 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			title: 'MiniWaffle',
-			link: [{ rel: 'icon', href: 'waffle.png' }],
+			link: [{ rel: 'icon', href: '/waffle.png' }],
 		},
 	},
 	routeRules: {
